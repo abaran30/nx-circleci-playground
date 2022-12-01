@@ -1,0 +1,39 @@
+version: 2.1
+
+orbs:
+  nx: nrwl/nx@1.6.1
+
+jobs:
+  setup:
+    docker:
+      - image: cimg/node:16.18.1
+    steps:
+      - checkout
+      - restore_cache:
+          key: npm-deps-{{ checksum "package-lock.json" }}
+      - run: npm ci
+      - save_cache:
+          key: npm-deps-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+            - ../.cache
+
+  e2e:
+    docker:
+      - image: cypress/base:16.18.1
+    steps:
+      - checkout
+      - restore_cache:
+          key: npm-deps-{{ checksum "package-lock.json" }}
+      - run:
+          name: e2e
+          command: |
+            npx nx run my-app-a-e2e:e2e
+
+workflows:
+  pipeline:
+    jobs:
+      - setup
+      - e2e:
+          requires:
+            - setup
