@@ -7,7 +7,7 @@ jobs:
   setup:
     docker:
       - image: cimg/node:16.18.1
-    working_directory: /opt/project
+    working_directory: /home/project
     steps:
       - checkout
       - restore_cache:
@@ -23,7 +23,7 @@ jobs:
   e2e:
     docker:
       - image: cypress/base:16.18.1
-    working_directory: /opt/project
+    working_directory: /home/project
     steps:
       - checkout
       - restore_cache:
