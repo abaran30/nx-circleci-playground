@@ -31,7 +31,7 @@ jobs:
           key: npm-deps-{{ checksum "package-lock.json" }}
       - run: pwd
       - run: ls -la
-      - run: ls -la ~
+      - run: ls -la /root/project
       - run:
           name: e2e
           command: |
