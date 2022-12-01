@@ -14,6 +14,7 @@ jobs:
           key: npm-deps-{{ checksum "package-lock.json" }}
       - run: npm ci
       - run: pwd
+      - run: ls -la
       - save_cache:
           key: npm-deps-{{ checksum "package-lock.json" }}
           paths:
@@ -29,6 +30,7 @@ jobs:
       - restore_cache:
           key: npm-deps-{{ checksum "package-lock.json" }}
       - run: pwd
+      - run: ls -la
       - run:
           name: e2e
           command: |
