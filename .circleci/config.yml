@@ -17,18 +17,25 @@ jobs:
           paths:
             - node_modules
             - ../.cache
+      - when:
+          not:
+            - equal: [cxui-components, cheese]
+      - persist_to_workspace:
+            root: .
+            paths:
+              - ./dist/apps/cheese
 
-  e2e:
-    docker:
-      - image: cypress/base:16.18.1
-    steps:
-      - checkout
-      - restore_cache:
-          key: npm-deps-{{ checksum "package-lock.json" }}
-      - run:
-          name: e2e
-          command: |
-            npx nx run my-app-a-e2e:e2e
+  # e2e:
+  #   docker:
+  #     - image: cypress/base:16.18.1
+  #   steps:
+  #     - checkout
+  #     - restore_cache:
+  #         key: npm-deps-{{ checksum "package-lock.json" }}
+  #     - run:
+  #         name: e2e
+  #         command: |
+  #           npx nx run my-app-a-e2e:e2e
 
 workflows:
   pipeline:
