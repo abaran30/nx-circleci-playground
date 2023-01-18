@@ -3,6 +3,12 @@ version: 2.1
 orbs:
   nx: nrwl/nx@1.6.1
 
+parameters:
+  sample:
+    type: enum
+    enum: ['hello', 'world']
+    default: 'hello'
+
 jobs:
   setup:
     docker:
@@ -25,10 +31,12 @@ jobs:
       - checkout
       - restore_cache:
           key: npm-deps-{{ checksum "package-lock.json" }}
-      - run:
-          name: e2e
-          command: |
-            npx nx run my-app-a-e2e:e2e
+      - run: export A=world
+      - when:
+          condition:
+            equal: [$A, << pipeline.parameters.sample >>]
+          steps:
+            - run: echo "cheese"
 
 workflows:
   pipeline:
